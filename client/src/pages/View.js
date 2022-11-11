@@ -6,12 +6,13 @@ import { Link, useParams } from "react-router-dom"
 import { Container, Row,Col } from "react-bootstrap"
 import { useEffect, useState } from 'react';
 import axios from "axios";
+import { URI } from '../api/api'
 
 const View = ()=>{
     const [user,setuser] = useState({})
     const {id} = useParams()
     useEffect(()=>{
-        axios.get('http://localhost:8000/api/user/'+id)
+        axios.get(URI+'user/'+id)
         .then(res=>{
             setuser(res.data)
         })

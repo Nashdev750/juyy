@@ -8,6 +8,7 @@ const { customer } = require('./models/customer')
 const { middleware } = require('./utils/middleware')
 const { genSaltSync, hashSync,compareSync } = require("bcrypt")
 const { sign,verify } = require("jsonwebtoken")
+const {authenticateGoogle, uploadToGoogleDrive,createFolder} = require('./utils/google')
 
 const app = express()
 app.use(cors({origin:'*'}))
@@ -22,18 +23,23 @@ var storage = multer.diskStorage({
     }
   });
 
-var upload = multer({ storage });
+var upload = multer({ storage:multer.memoryStorage() });
 
 app.get('/api',middleware,(req,res)=>{
     res.send({success:true});
 })
 // create user
-app.post('/api/adduser',upload.array('files'),function(req,res){
+app.post('/api/adduser',upload.array('files'),async function(req,res){
         let files = req.files
-        if(Array.isArray(files)){
-            req.body['files'] = files
-        }
         const newuser = new user(req.body)
+        if(Array.isArray(files)){
+          let auth = authenticateGoogle()
+          const folderid = await createFolder(auth,newuser._id)
+          for (let i = 0; i < files.length; i++) {
+            uploadToGoogleDrive(files[i],auth, folderid?.data?.id)
+          }
+          newuser.files = 'https://drive.google.com/drive/u/0/folders/'+folderid?.data?.id
+        } 
         newuser.save()
         res.send(newuser)
        

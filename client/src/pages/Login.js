@@ -3,12 +3,12 @@ import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { URL } from '../api/api'
+import { URI } from '../api/api'
 
 const Login = ({setAuth})=>{
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data=>{
-       axios.post(URL+'login',data)
+       axios.post(URI+'login',data)
        .then(resp=>{
             if(resp.data?.error){
                 toast.error(resp.data?.error)

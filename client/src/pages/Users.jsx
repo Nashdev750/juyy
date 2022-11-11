@@ -8,13 +8,14 @@ import AddUser from "./AddUser";
 import axios from "axios";
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from "react-router-dom";
+import { URI } from '../api/api'
 
 const Users = ()=>{
     const [open, setOpen] = useState(false)
     const [users,setusers] = useState([])
 
     useEffect(()=>{
-        axios.get('http://localhost:8000/api/users')
+        axios.get(URI+'users')
         .then(res=>{
             setusers(res.data)
         })

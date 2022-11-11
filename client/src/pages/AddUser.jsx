@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useForm } from "react-hook-form";
 import SaveIcon from '@mui/icons-material/Save';
 import axios from "axios";
+import { URI } from '../api/api'
 
 const AddUser = ()=>{
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -23,8 +24,9 @@ const AddUser = ()=>{
                   formdata.append(ky,data[ky])
                 }
         })
-       axios.post('http://localhost:8000/api/adduser',formdata)
+       axios.post(URI+'adduser',formdata)
        .then(res=>{
+        alert("User added successfully")
         console.log(res.data)
        })
 
@@ -32,16 +34,7 @@ const AddUser = ()=>{
     const [front,setFront] = useState()
     const [back,setBack] = useState()
   
-//     const onSubmit = (data)=>{
-//         const formdata = new FormData()
-//         Object.keys(data).map(ky=>{
-//             formdata.append(ky,data[ky])
-//             console.log(data[ky])
-//         })
-//         formdata.append("type","client")
-//         console.log(formdata)
-//         // console.log(data)
-//     }
+
     return (
         <div className="side">
             

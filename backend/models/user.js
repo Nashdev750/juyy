@@ -43,8 +43,9 @@ const userSchema = new mongoose.Schema({
         require:false
     },
     files:{
-      type: Array,
-      require: false  
+      type: String,
+      require: false,
+      default:''  
     },
     status:{
       type: Number,

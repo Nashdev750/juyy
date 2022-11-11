@@ -1,7 +1,7 @@
 import { CircularProgress } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import {URL} from '../api/api'
+import {URI} from '../api/api'
 import Login from '../pages/Login'
 
 const Layout = ({children})=>{
@@ -10,7 +10,7 @@ const Layout = ({children})=>{
     
     useEffect(()=>{
        let token  = window.localStorage.getItem('token')
-       axios.get(URL, {
+       axios.get(URI, {
         headers: {
           'Authorization': `Bearer ${token}` 
         }
