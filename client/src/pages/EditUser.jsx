@@ -3,11 +3,11 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import AddIcon from '@mui/icons-material/Add';
 import { useForm } from "react-hook-form";
 import SaveIcon from '@mui/icons-material/Save';
-import { URI,getData, postData } from '../api/api'
-import { toast,ToastContainer } from "react-toastify";
+import axios from "axios";
+import { URI,getData,postData } from '../api/api'
 
-const AddUser = ({getUsers})=>{
-    const { register, handleSubmit, formState: { errors } } = useForm();
+const EditUser = ({getUser,customer})=>{
+    const { register, handleSubmit,setValue, formState: { errors } } = useForm();
     const [users,setUsers] = useState([])
     const user = JSON.parse(window.localStorage.getItem('user'))
 
@@ -18,45 +18,56 @@ const AddUser = ({getUsers})=>{
            if(!res.data?.error) setUsers(res.data)
         })
        }
+
+       setValue('clientID',customer?.clientID)
+       setValue('clientName',customer?.clientName)
+       setValue('dob',customer?.dob)
+       setValue('sex',customer?.sex)
+       setValue('residence',customer?.residence)
+       setValue('issueDate',customer?.issueDate)
+       setValue('phone',customer?.phone)
+       setValue('clientid9',customer?.clientid9)
+       setValue('notes',customer?.notes)
+       setValue('status',customer?.status)
+       setValue('approvalDate',customer?.approvalDate)
+       setValue('signedDate',customer?.signedDate)
+       setValue('successDate',customer?.successDate)
+
     },[])
 
-
-    const onSubmit = data => {
+    const onSubmit = frm => {
+        let data = {}
+        Object.keys(frm).map(ky=>{
+            if(frm[ky] && ky !=='front' && ky !=='back' && ky !=='files') data[ky] = frm[ky]
+        })
         const formdata = new FormData()
-        formdata.append('files', data.front[0])
-        formdata.append('files', data.back[0])
-        for(let i = 0; i < data.files.length; i++) {
+        if(frm?.front?.length>0)formdata.append('files', frm.front[0])
+        if(frm?.back?.length>0)formdata.append('files', frm.back[0])
+        for(let i = 0; i < data?.files?.length; i++) {
            formdata.append('files', data.files[i])
         }
-        console.log(data)
-        if(data?.user) {
-           let c = users[Number(data.user)]
-           data.userid = c._id
-           data.user = JSON.stringify(c)
-        }else{
-           console.log(user)
-           data.userid = user._id
-           data.user = JSON.stringify(user)     
-        }
+            if(data?.user){
+                let c = users[Number(data.user)]
+                if(c){
+                    data.userid = c._id
+                    data.user = JSON.stringify(c)
+                }
+                
+            }
         Object.keys(data).map(ky=>{
                 if(ky !=='front' && ky !=='back' && ky !=='files'){
                   formdata.append(ky,data[ky])
                 }
         })
-       postData('adduser',formdata)
+        postData('edituser/'+customer?._id,formdata)
        .then(res=>{
-        if(res.data.error) return toast.error(res.data.error)
-        if(res.data?._id){
-                setUsers(prv=>{
-                        return [...prv,res.data]
-                })
-                toast.success("User added successfully")
-        }else{
-                toast.error("Unknown error")       
-        }
-       }).catch(err=>{
-        toast.error("Unknown error") 
-    })
+        if(res.data?._id) getUser()
+        alert("User updated successfully")
+       })
+       .catch(err=>{
+        console.log(err)
+        alert('Unkown error occurred')
+       })
 
     };
     const [front,setFront] = useState()
@@ -64,7 +75,7 @@ const AddUser = ({getUsers})=>{
 
     return (
         <div className="side">
-               <ToastContainer/>
+            
             <form onSubmit={handleSubmit(onSubmit)} className="form" encType="multipart/form-data">
             <div className="files">
                <div className="front">
@@ -75,7 +86,7 @@ const AddUser = ({getUsers})=>{
                     <img src={front} alt="" style={{display:front?'flex':'none'}}/>
                  </label>
                  <input type="file" id="front" 
-                 {...register("front", { required: true, onChange:(e)=>setFront(URL.createObjectURL(e.target.files[0])) })}
+                 {...register("front", { required: false, onChange:(e)=>setFront(URL.createObjectURL(e.target.files[0])) })}
                  />
                </div>
                <div className="back">
@@ -86,7 +97,7 @@ const AddUser = ({getUsers})=>{
                     <img src={back} alt="" style={{display:back?'flex':'none'}}/>
                  </label>
                  <input type="file" id="back" 
-                  {...register("back", { required: true, onChange:(e)=>setBack(URL.createObjectURL(e.target.files[0])) })}
+                  {...register("back", { required: false, onChange:(e)=>setBack(URL.createObjectURL(e.target.files[0])) })}
                  />
                </div>
             </div>
@@ -94,7 +105,7 @@ const AddUser = ({getUsers})=>{
                 <div className="input">
                         <select
                         style={{border:`${errors.user?'1px solid tomato':''}`}}
-                        {...register("user", { required: true })}>
+                        {...register("user", { required: false })}>
                                 <option value="">Select Users Client</option>
                                 {users.map((user,i)=>(
                                    <option key={i} value={i}>{user.username}</option>
@@ -105,25 +116,25 @@ const AddUser = ({getUsers})=>{
             <div className="input">
                     <input
                       style={{border:`${errors.clientID?'1px solid tomato':''}`}}
-                     type="number"  {...register("clientID", { required: true })} placeholder="Client ID" />
+                     type="number"  {...register("clientID", { required: false })} placeholder="Client ID" />
             </div>
             <div className="input">
                     <input
                      style={{border:`${errors.clientName?'1px solid tomato':''}`}}
-                    {...register("clientName", { required: true })}
+                    {...register("clientName", { required: false })}
                     type="text" placeholder="Client Name" />
             </div>
             <div className="input">
                     <input
                      style={{border:`${errors.dob?'1px solid tomato':''}`}}
                      type="date" placeholder="Date of Birth" 
-                     {...register("dob", { required: true })}
+                     {...register("dob", { required: false })}
                     />
             </div>
             <div className="input">
                     <select 
                      style={{border:`${errors.sex?'1px solid tomato':''}`}}
-                     {...register("sex", { required: true })}
+                     {...register("sex", { required: false })}
                     >
                         <option value="">Sex</option>
                         <option value="Male">Male</option>
@@ -133,19 +144,19 @@ const AddUser = ({getUsers})=>{
             <div className="input">
                     <input type="text" placeholder="Place of Residence"
                      style={{border:`${errors.residence?'1px solid tomato':''}`}} 
-                     {...register("residence", { required: true })}
+                     {...register("residence", { required: false })}
                     />
             </div>
             <div className="input">
                     <input type="date" placeholder="ID Issue Date"
                      style={{border:`${errors.issueDate?'1px solid tomato':''}`}}
-                    {...register("issueDate", { required: true })}
+                    {...register("issueDate", { required: false })}
                     />
             </div>
             <div className="input">
                     <input type="number" placeholder="Phone Number"
                      style={{border:`${errors.phone?'1px solid tomato':''}`}}
-                     {...register("phone", { required: true })}
+                     {...register("phone", { required: false })}
                     />
             </div>
             <div className="input">
@@ -157,7 +168,7 @@ const AddUser = ({getUsers})=>{
             <div className="input">
                     <textarea cols="30" rows="5"
                      style={{border:`${errors.notes?'1px solid tomato':''}`}}
-                     {...register("notes", { required: true })}
+                     {...register("notes", { required: false })}
                     ></textarea>
             </div>
             <div className="input other">
@@ -180,4 +191,4 @@ const AddUser = ({getUsers})=>{
     )
 }
 
-export default AddUser
+export default EditUser

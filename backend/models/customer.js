@@ -12,7 +12,7 @@ const customerSchema = new mongoose.Schema({
     role:{
         type:String,
         require: false,
-        default:'admin'
+        default:'user'
     },
     status:{
         type:Boolean,

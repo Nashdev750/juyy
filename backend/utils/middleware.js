@@ -7,6 +7,7 @@ const middleware = (req,res,next)=>{
     }else if(token){
         verify(token.slice(7),"key12wert",(err,user)=>{
             if(user){
+                req.user = user
                 next()
             }else{
                 return res.send({error:"Invalid access token"})

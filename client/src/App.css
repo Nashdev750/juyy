@@ -203,10 +203,10 @@
   padding: 0;
   line-height: 1.2;
 }
-.atrr span:first-child{
+.atrr span:last-child{
   font-weight: 500;
 }
-.atrr span:last-child{
+.atrr span:first-child{
   content: #5c5b5b;
   font-size: 13px;
 }
@@ -251,7 +251,106 @@
   outline: none;
   background-color: #B3B3B3;
 }
+.state{
+  padding: 3px 25px;
+  border-radius: 20px;
+  font-weight: 400;
+  border: 1px solid #B3B3B3;
+  color: #B3B3B3;
+  width: fit-content;
+  /* text-transform: capitalize; */
+}
+.header{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 2px solid #4ECB71;
+  padding-bottom: 10px;
+}
+.menu{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.menu a{
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+}
+.filter{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  
+}
+.filter input,.filter select{
+  outline: none;
+  padding: 1px;
+  border: 1px solid #B3B3B3;
+}
+.filter input[type="date"]{
+  padding: 0;
+}
+.canceled{
+  color: #EB0C0C;
+  border: 1px solid #EB0C0C;
+}
+.success{
+  color: #4ECB71;
+  border: 1px solid #4ECB71;
+}
+.fail{
+  color: #FFD233;
+  border: 1px solid #FFD233;
+}
+.signed{
+  color: #85B6FF;
+  border: 1px solid #85B6FF;
+}
+.approved{
+  color: #FF9790;
+  border: 1px solid #FF9790;
+}
+.adduser{
+  padding: 20px;
+}
+.adduser form div{
+  margin-bottom: 10px;
+}
+.stat .data{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.stat .data div{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0px;
+  margin-right: 10px;
+}
+.stat .data div span{
+  border: none !important;
+}
+.stat .data div span:last-child{
+  font-weight: 800;
+  font-size: 25px;
+}
 @media(max-width:768px){
+  .filter input,.filter select{
+    width: 100%;
+  }
   .container-fluid{
     width: 100%;
   }

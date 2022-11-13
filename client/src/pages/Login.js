@@ -16,7 +16,7 @@ const Login = ({setAuth})=>{
             }
             if(resp.data?.user){
                 window.localStorage.setItem('token', resp.data?.token)
-                window.localStorage.setItem('user', JSON.stringify(resp.data?.token))
+                window.localStorage.setItem('user', JSON.stringify(resp.data?.user))
                 setAuth(true)
             }
        })

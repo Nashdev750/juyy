@@ -3,12 +3,18 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const userSchema = new mongoose.Schema({
     user:{
+        type:Object,
+        require:false
+    },
+    userid:{
         type:String,
         require:false
     },
     clientID:{
         type:String,
-        require:false
+        require:false,
+        dropDups: true, 
+        unique:true
     },
     clientName:{
         type:String,
@@ -32,11 +38,15 @@ const userSchema = new mongoose.Schema({
     },
     phone:{
         type:String,
-        require:false
+        require:false,
+        dropDups: true, 
+        unique:true
     },
     clientid9:{
         type:String,
-        require:false
+        require:false,
+        dropDups: true, 
+        unique:true
     },
     notes:{
         type:String,
@@ -48,9 +58,9 @@ const userSchema = new mongoose.Schema({
       default:''  
     },
     status:{
-      type: Number,
+      type: String,
       require: false,
-      default: 0  
+      default: 'waiting'  
     },
     approvalDate:{
       type: String,
