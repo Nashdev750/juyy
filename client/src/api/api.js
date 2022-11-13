@@ -1,5 +1,5 @@
 import axios from 'axios'
-export const URI = 'http://localhost:8000/api/'
+export const URI = 'https://mothetindung247.one/api/'
 
 const config = ()=>{
     return {
