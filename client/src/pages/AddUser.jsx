@@ -28,13 +28,11 @@ const AddUser = ({getUsers})=>{
         for(let i = 0; i < data.files.length; i++) {
            formdata.append('files', data.files[i])
         }
-        console.log(data)
         if(data?.user) {
            let c = users[Number(data.user)]
            data.userid = c._id
            data.user = JSON.stringify(c)
         }else{
-           console.log(user)
            data.userid = user._id
            data.user = JSON.stringify(user)     
         }
@@ -94,7 +92,7 @@ const AddUser = ({getUsers})=>{
                 <div className="input">
                         <select
                         style={{border:`${errors.user?'1px solid tomato':''}`}}
-                        {...register("user", { required: true })}>
+                        {...register("user", { required: false })}>
                                 <option value="">Select Users Client</option>
                                 {users.map((user,i)=>(
                                    <option key={i} value={i}>{user.username}</option>
